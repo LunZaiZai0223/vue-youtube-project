@@ -3,7 +3,7 @@
     v-for="({ toolName, version }, index) in footerInfo"
     :key="index"
   >
-    <p>
+    <p class="item">
       <span>
         {{ toolName + ': ' }}
       </span>
@@ -40,3 +40,9 @@ export default {
   }
 }
 </script>
+
+<style lang="scss" scoped>
+.item {
+  font-size: 0.85rem;
+}
+</style>

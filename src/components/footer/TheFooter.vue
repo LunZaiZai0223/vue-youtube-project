@@ -1,10 +1,10 @@
 <template>
   <footer>
-    <h2>Im footer</h2>
     <ul>
       <footer-item :footerInfo="footerInfo"></footer-item>
     </ul>
-
+    <p>此專案為單純的作品練習，資料及圖片來源皆出自網路，不使用於任何商業或營利行為。</p>
+    <p>此專案的排版及功能參考大神的<a href="https://mini-ghost.github.io/vue3-youtube-practice/#/" target="_blank">練習</a>。</p>
   </footer>
 </template>
 
@@ -20,15 +20,15 @@ export default {
     return {
       footerInfo: [
         {
-          toolName: 'vue',
+          toolName: 'Vue',
           version: '^3.2.13'
         },
         {
-          toolName: 'vue-router',
+          toolName: 'Vue-router',
           version: '^4.0.14'
         },
         {
-          toolName: 'vuex',
+          toolName: 'Vuex',
           version: '^4.0.2'
         },
       ]
@@ -40,6 +40,11 @@ export default {
 <style lang="scss" scoped>
 footer {
   background-color: $info;
+  padding: 0.75rem;
+}
+
+p a {
+  font-style: italic;
 }
 
 
