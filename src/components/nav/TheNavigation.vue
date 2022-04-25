@@ -34,6 +34,7 @@ export default {
     margin: 0 auto;
     justify-content: space-between;
     align-items: center;
+    padding: 0 1.5rem;
     h1 a{
       text-decoration: none;
       font-size: 1.75rem;
