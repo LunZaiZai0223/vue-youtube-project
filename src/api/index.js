@@ -36,6 +36,19 @@ const getSearchAllConfig = (isFirstLoading = true, nextPageToken) => {
   }
 };
 
+const getSearchVideoByIdConfig = (id) => {
+  return {
+    methods: 'Get',
+    params: {
+      part: 'snippet',
+      id,
+      regionCode: 'TW',
+      key: myKey
+// https://youtube.googleapis.com/youtube/v3/videos?part=snippet&id=nhnrfTb8xzA&regionCode=TW&key=[YOUR_API_KEY]
+    }
+  }
+};
+
 const getApiUrl = (baseUrl, { params }) => {
   console.log(baseUrl);
   console.log(params);
@@ -49,8 +62,17 @@ const fetchVideosData = ({ isFirstLoading, nextPageToken }) => {
   const apiUrl = getApiUrl(baseUrl, config);
   console.log(apiUrl);
   return fetch(apiUrl).then((response) => response.json());
-}
+};
 
-export { fetchVideosData, getSearchAllConfig, getApiUrl, baseUrl }
+const fetchVideoDataById = ({ id }) => {
+  console.log(12313213131313);
+  const config = getSearchVideoByIdConfig(id);
+  const apiUrl = getApiUrl(baseUrl, config);
+  console.log(apiUrl);
+  console.log(config);
+  return fetch(apiUrl).then((response) => response.json());
+};
+
+export { fetchVideosData, getSearchAllConfig, getApiUrl, baseUrl, getSearchVideoByIdConfig, fetchVideoDataById }
 
 // https://youtube.googleapis.com/youtube/v3/videos?part=snippet&chart=mostPopular&maxResults=9&pageToken=%20&regionCode=TW&key=[YOUR_API_KEY]

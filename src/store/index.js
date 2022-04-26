@@ -8,6 +8,7 @@ const store = createStore({
       isFirstLoading: false,
       loadedItems: [],
       nextPageToken: '',
+      currentVideoId: '',
     };
   },
   getters: {
@@ -23,6 +24,9 @@ const store = createStore({
       const { thumbnails } = state.loadedItems.find((item) => item.id === id);
       return thumbnails.high;
     },
+    getCurrentVideoData: (state) => (id) => {
+      return state.loadedItems.find((item) => item.id === id);
+    }
   },
   mutations: {
     addNewLoadedItems (state, payload = []) {
@@ -40,6 +44,12 @@ const store = createStore({
       console.log('old: ', state.nextPageToken);
       state.nextPageToken = payload;
       console.log('new: ', state.nextPageToken);
+    },
+    updateCurrentVideoId (state, payload) {
+      console.log('更新 currentVideoId');
+      console.log('old: ', state.currentVideoId);
+      state.currentVideoId = payload;
+      console.log('new: ', state.currentVideoId);
     }
   },
   actions: {
@@ -52,7 +62,8 @@ const store = createStore({
         commit('afterFirstLoading', false);
       }
       return fetch(apiUrl).then((response) => response.json());
-    }
+    },
+    // fetchVideoById({ state, commit })
   }
 });
 

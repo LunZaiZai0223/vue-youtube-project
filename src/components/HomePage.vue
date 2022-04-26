@@ -1,20 +1,20 @@
 <template>
   <the-navigation></the-navigation>
-  <video-items></video-items>
+  <video-list></video-list>
   <the-footer></the-footer>
 </template>
 
 <script>
 import TheNavigation from './nav/TheNavigation.vue';
 import TheFooter from './footer/TheFooter.vue';
-import VideoItems from './VideoItems.vue';
+import VideoList from './VideoList.vue';
 
 export default {
   name: 'HomePage',
   components: {
     TheNavigation,
     TheFooter,
-    VideoItems
+    VideoList
   },
 }
 </script>
