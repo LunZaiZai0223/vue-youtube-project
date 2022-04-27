@@ -1,37 +1,32 @@
 <template>
   <the-navigation></the-navigation>
   <h1>The Video page</h1>
-  <!-- <the-youtube -->
-  <!--   :src="https://www.youtube.com/watch?v=QpH3F9abCas" -->
-  <!--   ref="youtube" -->
-  <!--   @ready="onReady" -->
-  <!-- ></the-youtube> -->
-  <test-video :src="currentVideoId"></test-video>
-  <the-footer
-  ></the-footer>
+  <video-player :test-link="testLink" :player-height="playerHeight" :player-width="playerWidth"></video-player>
+  <the-footer></the-footer>
 </template>
 
 <script>
 import { mapGetters } from 'vuex';
 import { fetchVideoDataById } from '../api/index.js';
 
-// NOTE: 結果竟然只能傳子層... 要再想一下好的串接方式 + 複習 props 到底是 :子層的key="還是子層的key其實在這裡"
-
 import TheNavigation from './nav/TheNavigation.vue';
 import TheFooter from './footer/TheFooter.vue';
-import TestVideo from './TestVideo.vue';
+import VideoPlayer from './VideoPlayer.vue';
 
 export default {
   name: 'TheVideo',
   components: {
     TheNavigation,
     TheFooter,
-    TestVideo
+    VideoPlayer
   },
   data () {
     return {
       currentVideoId: '',
       currentVideoItem: {},
+      testLink: 'https://www.youtube.com/watch?v=QpH3F9abCas',
+      playerHeight: 0,
+      playerWidth: 0,
     }
   },
   computed: {
@@ -50,16 +45,31 @@ export default {
       // items 是 array
       return items[0];
     },
-    // onReady () {
-    //   console.log('play video');
-    //   console.log(this.currentVideoId);
-    //   console.log(this.youtubuUrl);
-    //   this.$refs.youtube.playVideo();
-    // }
+    getPlayerHeight () {
+      const currentClientWidth = document.documentElement.clientWidth;
+      console.log(currentClientWidth);
+      if (currentClientWidth > 1275) {
+        this.playerHeight = 693;
+      } else {
+        this.playerHeight = Math.floor((currentClientWidth / 1.8));
+      }
+      console.log(this.playerHeight);
+    },
+    getPlayerWidth () {
+      const currentClientWidth = document.documentElement.clientWIdth;
+      if (currentClientWidth > 1280) {
+        this.playerWidth = 1280;
+      } else {
+        this.playerWidth = currentClientWidth - 24;
+      }
+    }
   },
   async mounted () {
     // NOTE: 最後再試試看能不能用 router guards 解決（先檢查有無資料，若無打完再進來之類的）
-
+    // this.getPlayerHeight();
+    // this.getPlayerWidth();
+    // window.addEventListener('resize', this.getPlayerHeight);
+    // window.addEventListener('resize', this.getPlayerWidth);
     this.currentVideoId = this.$route.params.videoId;
     const foundVideo = this.hasTheVideoLocally(this.currentVideoId);
     if (foundVideo) { 
@@ -69,5 +79,9 @@ export default {
     Object.assign(this.currentVideoItem, fetchedVideo);
     console.log(this.currentVideoItem);
   },
+  unmounted () {
+    // window.removeEventListener('resize', this.getPlayerHeight);
+    // window.removeEventListener('resize', this.getPlayerWidth);
+  }
 }
 </script>
