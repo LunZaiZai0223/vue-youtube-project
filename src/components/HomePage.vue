@@ -7,7 +7,7 @@
 <script>
 import TheNavigation from './nav/TheNavigation.vue';
 import TheFooter from './footer/TheFooter.vue';
-import VideoList from './VideoList.vue';
+import VideoList from '../views/VideoList.vue';
 
 export default {
   name: 'HomePage',

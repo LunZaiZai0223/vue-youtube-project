@@ -8,8 +8,6 @@ const baseUrl = 'https://youtube.googleapis.com/youtube/v3/videos?';
 const myKey = 'AIzaSyBZ7Mm1v1QEyUaYnPET_koH0uC10x3XWwo';
 
 const getSearchAllConfig = (isFirstLoading = true, nextPageToken) => {
-  console.log(isFirstLoading);
-  console.log(nextPageToken);
   if (isFirstLoading) {
     return {
       method: 'Get',
@@ -50,26 +48,19 @@ const getSearchVideoByIdConfig = (id) => {
 };
 
 const getApiUrl = (baseUrl, { params }) => {
-  console.log(baseUrl);
-  console.log(params);
   const parsed = Object.entries(params).map((arr) => arr.join('=')).join('&');
   return baseUrl + parsed;
 };
 
 const fetchVideosData = ({ isFirstLoading, nextPageToken }) => {
   const config = getSearchAllConfig(isFirstLoading, nextPageToken);
-  console.log(config);
   const apiUrl = getApiUrl(baseUrl, config);
-  console.log(apiUrl);
   return fetch(apiUrl).then((response) => response.json());
 };
 
 const fetchVideoDataById = ({ id }) => {
-  console.log(12313213131313);
   const config = getSearchVideoByIdConfig(id);
   const apiUrl = getApiUrl(baseUrl, config);
-  console.log(apiUrl);
-  console.log(config);
   return fetch(apiUrl).then((response) => response.json());
 };
 

@@ -28,6 +28,9 @@ export default {
   backdrop-filter: blur(5px); 
   border-bottom: 1px solid $border-color;
   color: Black;
+  position: fixed;
+  right: 0;
+  left: 0;
   &-wrapper {
     display: flex;
     max-width: 1280px;

@@ -31,6 +31,10 @@ export default {
           toolName: 'Vuex',
           version: '^4.0.2'
         },
+        {
+          toolName: 'vue3-youtube',
+          version: '^0.1.9'
+        }
       ]
     }
   }

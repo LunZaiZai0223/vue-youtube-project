@@ -37,9 +37,6 @@ export default {
       default: () => {}
     }
   },
-  mounted () {
-    // console.log(this.snippet)
-  },
   computed: {
     ...mapState(['loadedItems']),
     goToVideoPage () {
@@ -50,10 +47,7 @@ export default {
     ...mapMutations(['updateCurrentVideoId']),
     handleClick (id) {
       console.log('I got click!');
-      console.log(id);
-      this.updateCurrentVideoId(id);
-      console.log(this.loadedItems);
-      console.log(this.loadedItems.find((item) => item.id === id));
+      console.log(id)
     }
   }
 }

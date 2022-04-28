@@ -1,7 +1,13 @@
 <template>
   <the-navigation></the-navigation>
-  <h1>The Video page</h1>
-  <video-player :test-link="testLink" :player-height="playerHeight" :player-width="playerWidth"></video-player>
+  <!-- v-if 控制資料有沒有來 -->
+  <video-player 
+    v-if="currentVideoItem"
+    :video-link="getVideoLink"
+    :video-title="getVideoTitle"
+    :video-description="getVideoDescription"
+    :channel-title="getChannelTitle"
+  ></video-player>
   <the-footer></the-footer>
 </template>
 
@@ -11,7 +17,7 @@ import { fetchVideoDataById } from '../api/index.js';
 
 import TheNavigation from './nav/TheNavigation.vue';
 import TheFooter from './footer/TheFooter.vue';
-import VideoPlayer from './VideoPlayer.vue';
+import VideoPlayer from '../views/VideoPlayer.vue';
 
 export default {
   name: 'TheVideo',
@@ -23,65 +29,59 @@ export default {
   data () {
     return {
       currentVideoId: '',
-      currentVideoItem: {},
-      testLink: 'https://www.youtube.com/watch?v=QpH3F9abCas',
-      playerHeight: 0,
-      playerWidth: 0,
+      // null 給 template 判斷 true / false
+      currentVideoItem: null,
     }
   },
   computed: {
     ...mapGetters(['getCurrentVideoData']),
-    youtubuUrl () {
-      console.log(this.currentVideoId);
+    getVideoLink () {
       return `https://www.youtube.com/watch?v=${this.currentVideoId}`;
+    },
+    getVideoDescription () {
+      console.log('get video description');
+      return this.currentVideoItem.snippet.description;
+    },
+    getVideoTitle () {
+      console.log('get video title');
+      return this.currentVideoItem.snippet.localized.title;
+    },
+    getChannelTitle () {
+      return this.currentVideoItem.snippet.channelTitle;
     }
   },
   methods: {
     hasTheVideoLocally (currentVideoId) {
       return this.getCurrentVideoData(currentVideoId);
     },
-     async getVideoById (id) {
-      const { items } = await fetchVideoDataById({ id }).then((data) => data);
+     async getVideoById () {
+      this.currentVideoId = this.$route.params.videoId;
+      const foundVideo = this.hasTheVideoLocally(this.currentVideoId);
+      if (foundVideo) { 
+        console.log('vuex 有這個影片');
+        this.currentVideoItem = foundVideo;
+        console.log(this.currentVideoItem);
+        return;
+      }
+      const { items } = await fetchVideoDataById({ id: this.currentVideoId }).then((data) => data);
       // items 是 array
-      return items[0];
+      this.currentVideoItem = items[0];
+      console.log(this.currentVideoItem);
     },
-    getPlayerHeight () {
-      const currentClientWidth = document.documentElement.clientWidth;
-      console.log(currentClientWidth);
-      if (currentClientWidth > 1275) {
-        this.playerHeight = 693;
-      } else {
-        this.playerHeight = Math.floor((currentClientWidth / 1.8));
-      }
-      console.log(this.playerHeight);
-    },
-    getPlayerWidth () {
-      const currentClientWidth = document.documentElement.clientWIdth;
-      if (currentClientWidth > 1280) {
-        this.playerWidth = 1280;
-      } else {
-        this.playerWidth = currentClientWidth - 24;
-      }
-    }
   },
-  async mounted () {
+  // created () {
+  // NOTE: 留著之後測驗 template 上有的東西和 created 誰跑的快
+  //   
+  //   console.log('created got called');
+  //   // this.getVideoById();
+  // },
+  mounted () {
     // NOTE: 最後再試試看能不能用 router guards 解決（先檢查有無資料，若無打完再進來之類的）
-    // this.getPlayerHeight();
-    // this.getPlayerWidth();
-    // window.addEventListener('resize', this.getPlayerHeight);
-    // window.addEventListener('resize', this.getPlayerWidth);
-    this.currentVideoId = this.$route.params.videoId;
-    const foundVideo = this.hasTheVideoLocally(this.currentVideoId);
-    if (foundVideo) { 
-     return Object.assign(this.currentVideoItem, foundVideo);
-    }
-    const fetchedVideo = await this.getVideoById(this.currentVideoId);
-    Object.assign(this.currentVideoItem, fetchedVideo);
-    console.log(this.currentVideoItem);
-  },
-  unmounted () {
-    // window.removeEventListener('resize', this.getPlayerHeight);
-    // window.removeEventListener('resize', this.getPlayerWidth);
+    // NOTE: 即便是 lifecycle，template 上有的東西還是會先跑贏 mounted？這個可以好好筆記一下
+
+    this.getVideoById();
+    console.log('mounted got first');
+    console.log(' in mounted');
   }
 }
 </script>
