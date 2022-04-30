@@ -1,12 +1,19 @@
 import { createStore } from 'vuex';
 
+// import another vuex modules
+import favoriteList from './modules/favorite.js';
+
 import { getSearchAllConfig, getApiUrl, baseUrl } from '../api/index.js';
 
 const store = createStore({
+  modules: {
+    favoriteList
+  },
   state () {
     return {
       isFirstLoading: false,
       loadedItems: [],
+      currentPageMode: 'home',
       nextPageToken: '',
       currentVideoId: '',
     };
@@ -26,7 +33,7 @@ const store = createStore({
     },
     getCurrentVideoData: (state) => (id) => {
       return state.loadedItems.find((item) => item.id === id);
-    }
+    },
   },
   mutations: {
     addNewLoadedItems (state, payload = []) {
@@ -50,6 +57,14 @@ const store = createStore({
       console.log('old: ', state.currentVideoId);
       state.currentVideoId = payload;
       console.log('new: ', state.currentVideoId);
+    },
+    changeCurrentPageMode (state, payload) {
+      if (payload === 'favorite-page') {
+        state.currentPageMode = 'favorite';
+      } else if (!payload) {
+        state.currentPageMode = 'home';
+      }
+      console.log(state.currentPageMode);
     }
   },
   actions: {
@@ -63,7 +78,6 @@ const store = createStore({
       }
       return fetch(apiUrl).then((response) => response.json());
     },
-    // fetchVideoById({ state, commit })
   }
 });
 

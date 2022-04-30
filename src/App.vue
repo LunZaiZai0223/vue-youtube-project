@@ -1,6 +1,6 @@
 <template>
   <router-view></router-view>
-  <button @click="testClick">More</button>
+  <!-- <button @click="testClick">More</button> -->
 </template>
 
 <script>
@@ -9,7 +9,7 @@
 export default {
   name: 'App',
   mounted () {
-    this.getVideosData();
+    // this.getVideosData();
     // fetchVideosData({ isFirstLoad: true });
     // console.log('in mounted');
     // const url = 'https://youtube.googleapis.com/youtube/v3/videos?';
@@ -29,15 +29,15 @@ export default {
     //   .then((data) => console.log(data));
   },
   methods: {
-    async getVideosData () {
+    // async getVideosData () {
       // const { items, nextPageToken } = await fetchVideosData({ isFirstLoading: false, nextPageToken: 'CAwQAA' }).then((data) => data);
-      const { items, nextPageToken } = await this.$store.dispatch('fetchVideosData').then((data) => data);
-      console.log(items);
-      console.log(nextPageToken);
-      this.$store.commit('updateNextPageToken', nextPageToken);
-      this.$store.commit('addNewLoadedItems', items);
-      console.log('hello world');
-    },
+    //   const { items, nextPageToken } = await this.$store.dispatch('fetchVideosData').then((data) => data);
+    //   console.log(items);
+    //   console.log(nextPageToken);
+    //   this.$store.commit('updateNextPageToken', nextPageToken);
+    //   this.$store.commit('addNewLoadedItems', items);
+    //   console.log('hello world');
+    // },
     testClick () {
       console.log('got click');
       this.getVideosData();

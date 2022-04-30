@@ -1,7 +1,7 @@
 <template>
   <main>
     <div 
-     v-for="({ id, snippet }) in loadedItems" 
+     v-for="({ id, snippet }) in videoList" 
      :key="id"
      class="card"
     >
@@ -14,8 +14,6 @@
 </template>
 
 <script>
-import { mapState, mapGetters } from 'vuex';
-
 import VideoItem from './VideoItem.vue';
 
 export default {
@@ -23,10 +21,16 @@ export default {
   components: {
     VideoItem,
   },
-  computed: {
-    ...mapState(['loadedItems']),
-    ...mapGetters(['getDataSnippet', 'getHighThumbnails']),
+  props: {
+    videoList: {
+      type: Array,
+      default: () => []
+    }
   },
+  mounted () {
+    console.log(this.$route);
+    this.$store.commit('changeCurrentPageMode', this.$route.name);
+  }
 }
 </script>
 
@@ -35,9 +39,12 @@ main {
   width: 100%;
   max-width: 1280px;
   margin: 1.5rem auto;
+  margin-top: 0px;
   display: flex;
   flex-wrap: wrap;
   padding: 0 1.5rem;
+  /* 因為 navbar 是 position: fiexd，會跳出計算的範圍，所以 padding-top 要留 navbar 的高度*/
+  padding-top: 90px;
 }
 
 .card {

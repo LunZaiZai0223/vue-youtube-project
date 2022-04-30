@@ -1,10 +1,12 @@
 <template>
   <the-navigation></the-navigation>
-  <video-list></video-list>
+  <video-list :video-list="loadedItems"></video-list>
   <the-footer></the-footer>
 </template>
 
 <script>
+import { mapState } from 'vuex';
+
 import TheNavigation from './nav/TheNavigation.vue';
 import TheFooter from './footer/TheFooter.vue';
 import VideoList from '../views/VideoList.vue';
@@ -16,6 +18,28 @@ export default {
     TheFooter,
     VideoList
   },
+  mounted () {
+    this.getVideosData();
+  },
+  methods: {
+    async getVideosData () {
+      // const { items, nextPageToken } = await fetchVideosData({ isFirstLoading: false, nextPageToken: 'CAwQAA' }).then((data) => data);
+      // 先粗略地用 length 檢查有沒有資料，避免切頁面一直重新打 API
+      if (this.loadedItems.length > 0) {
+        console.log('目前不用再打資料了');
+        return;
+      }
+      const { items, nextPageToken } = await this.$store.dispatch('fetchVideosData').then((data) => data);
+      console.log(items);
+      console.log(nextPageToken);
+      this.$store.commit('updateNextPageToken', nextPageToken);
+      this.$store.commit('addNewLoadedItems', items);
+      console.log('hello world');
+    },
+  },
+  computed: {
+    ...mapState(['loadedItems'])
+  }
 }
 </script>
 <style lang="scss" scoped>

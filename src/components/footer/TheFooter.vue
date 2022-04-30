@@ -44,7 +44,7 @@ export default {
 <style lang="scss" scoped>
 footer {
   background-color: $info;
-  padding: 0.75rem;
+  padding: 1rem;
 }
 
 p a {

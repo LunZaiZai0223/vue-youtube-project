@@ -25,8 +25,9 @@ export default {
 
 <style lang="scss" scoped>
 .nav {
-  backdrop-filter: blur(5px); 
   border-bottom: 1px solid $border-color;
+  z-index: 99;
+  background-color: White;
   color: Black;
   position: fixed;
   right: 0;
@@ -38,6 +39,7 @@ export default {
     justify-content: space-between;
     align-items: center;
     padding: 0 1.5rem;
+    height: 72px;
     h1 a{
       text-decoration: none;
       font-size: 1.75rem;

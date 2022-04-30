@@ -14,6 +14,7 @@ const router = createRouter({
     },
     {
       path: '/favorite',
+      name: 'favorite-page',
       component: TheFavorite
     },
     {
