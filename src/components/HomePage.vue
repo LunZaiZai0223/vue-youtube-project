@@ -1,6 +1,9 @@
 <template>
   <the-navigation></the-navigation>
-  <video-list :video-list="loadedItems"></video-list>
+  <video-list 
+    v-if="loadedItems.length !== 0"
+    :video-list="loadedItems"
+  ></video-list>
   <the-footer></the-footer>
 </template>
 

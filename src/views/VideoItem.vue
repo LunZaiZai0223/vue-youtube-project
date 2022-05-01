@@ -4,7 +4,10 @@
       :to="goToVideoPage"
       @click="handleClick(id)"
     >
-    <img :src="snippet.thumbnails.high.url" />
+    <!-- 用 div + background-image 改 url -->
+    <!-- <img :src="snippet.thumbnails.high.url" /> -->
+    <!-- <div :style="{ 'background-image': `url(${snippet.thumbnails.high.url})`}"></div> -->
+    <div :style="{ 'background-image': `url(data:image/gif;base64,R0lGODlhAQABAIAAAMLCwgAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw==)`}"></div>
     </router-link>
     <button 
       v-if="!checkVideoHasAlreadyExisted(id)"
@@ -79,15 +82,20 @@ export default {
 
 <style lang="scss" scoped>
 .card {
-  img {
-    width: 100%;
-    display: block;
-    margin: -10% 0;
-  }
+  /* img { */
+  /*   width: 100%; */
+  /*   display: block; */
+  /*   margin: -10% 0; */
+  /* } */
   &-thumb {
     overflow: hidden;
     position: relative;
     border-radius: 0.5rem;
+    div {
+      padding-bottom: 56.25%;
+      background-size: cover;
+      background-position: center center;
+    }
     button {
       position: absolute;
       bottom: 0.25rem;

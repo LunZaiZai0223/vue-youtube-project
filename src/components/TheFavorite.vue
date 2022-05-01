@@ -38,6 +38,9 @@ export default {
       return this.favoriteList.length === 0;
     }
   },
+  updated () {
+    this.isNoFavoriteVideo && window.scroll(0, 0);
+  }
 }
 </script>
 
