@@ -38,9 +38,6 @@ export default {
       return this.favoriteList.length === 0;
     }
   },
-  mounted () {
-    console.log(this.$store.getters.getLoadedItems);
-  }
 }
 </script>
 

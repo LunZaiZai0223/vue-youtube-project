@@ -4,6 +4,7 @@
 </template>
 
 <script>
+import { mapMutations, mapState } from 'vuex';
 // import { fetchVideosData } from './api/index.js';
 
 export default {
@@ -27,6 +28,11 @@ export default {
     // fetch(url, config)
     //   .then((response) => response.json())
     //   .then((data) => console.log(data));
+    console.log('app component loaded!!!!')
+    this.checkLocalStorage();
+  },
+  computed: {
+    ...mapState('favoriteList', ['favoriteList']),
   },
   methods: {
     // async getVideosData () {
@@ -38,9 +44,18 @@ export default {
     //   this.$store.commit('addNewLoadedItems', items);
     //   console.log('hello world');
     // },
+    ...mapMutations('favoriteList', ['parseDataFromLocalStorage']),
     testClick () {
       console.log('got click');
       this.getVideosData();
+    },
+    checkLocalStorage () {
+      if (this.favoriteList.length === 0 && localStorage.getItem('favorite') === null) return;
+      if (this.favoriteList.length === 0 && localStorage.getItem('favorite')) {
+        const localStorageData = JSON.parse(localStorage.getItem('favorite'));
+        this.parseDataFromLocalStorage(localStorageData);
+
+      }
     }
   }
 }
