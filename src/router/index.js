@@ -4,6 +4,7 @@ import { createRouter, createWebHistory } from 'vue-router';
 import HomePage from '../components/HomePage.vue';
 import TheFavorite from '../components/TheFavorite.vue';
 import TheVideo from '../components/TheVideo.vue';
+import NotFound from '../components/NotFound.vue';
 
 const router = createRouter({
   history: createWebHistory(),
@@ -24,7 +25,12 @@ const router = createRouter({
       params: true,
       component: TheVideo
     },
+    {
+      path: '/:notFound(.*)', 
+      component: NotFound
+    }
   ],
+
   scrollBehavior(to, from, savedPosition) {
     console.log(to);
     console.log(from);
