@@ -1,6 +1,7 @@
 <template>
   <the-navigation></the-navigation>
   <!-- v-if 控制資料有沒有來 -->
+  <is-fetching v-if="isFetchingData"></is-fetching>
   <video-player 
     v-if="currentVideoItem"
     :video-link="getVideoLink"
@@ -20,19 +21,22 @@ import { fetchVideoDataById } from '../api/index.js';
 import TheNavigation from './nav/TheNavigation.vue';
 import TheFooter from './footer/TheFooter.vue';
 import VideoPlayer from '../views/VideoPlayer.vue';
+import IsFetching from './IsFetching.vue';
 
 export default {
   name: 'TheVideo',
   components: {
     TheNavigation,
     TheFooter,
-    VideoPlayer
+    VideoPlayer,
+    IsFetching
   },
   data () {
     return {
       currentVideoId: '',
       // null 給 template 判斷 true / false
       currentVideoItem: null,
+      isFetchingData: true,
     }
   },
   computed: {
@@ -60,6 +64,9 @@ export default {
     hasTheVideoLocally (currentVideoId) {
       return this.getCurrentVideoData(currentVideoId);
     },
+    toggleIsFetchingData () {
+      this.isFetchingData = false;
+    },
      async getVideoById () {
       // 如果 vuex 有資料的話就會是同步的，因為根本沒用到非同步 XDD
       console.log('in get video by id')
@@ -70,6 +77,7 @@ export default {
         console.log('vuex 有這個影片');
         this.currentVideoItem = foundVideo;
         console.log(this.currentVideoItem);
+        this.toggleIsFetchingData();
         return;
       }
       // vuex 沒影片資料就要重新打 API -> 非同步
@@ -77,6 +85,7 @@ export default {
       // items 是 array
       this.currentVideoItem = items[0];
       console.log(this.currentVideoItem);
+      this.toggleIsFetchingData();
     },
   },
   mounted () {

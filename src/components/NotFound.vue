@@ -19,12 +19,13 @@ export default {
 }
 </script>
 
-<style lang="scss" scopde>
+<style lang="scss" scoped>
 .page-not-found {
   display: flex;
   justify-content: center;
   align-items: center;
   padding-top: 72px;
+  min-height: 100vh;
   img {
     display: block;
     width: 50%;
