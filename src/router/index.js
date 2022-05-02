@@ -10,7 +10,8 @@ const router = createRouter({
   history: createWebHistory(),
   routes: [
     {
-      path: '/',
+      // path: '/'
+      path: process.env.NODE_ENV === 'production' ? '/vue-youtube-project/' : '/',
       name: 'home-page',
       component: HomePage
     },
