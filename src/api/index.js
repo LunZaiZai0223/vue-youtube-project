@@ -5,7 +5,7 @@
 //      - 不用 regionCode / pageToken
 
 const baseUrl = 'https://youtube.googleapis.com/youtube/v3/videos?';
-const myKey = 'AIzaSyBZ7Mm1v1QEyUaYnPET_koH0uC10x3XWwo';
+const myKey = process.env.VUE_APP_MY_API_KEY;
 
 const getSearchAllConfig = (isFirstLoading = true, nextPageToken, maxResults = 12) => {
   if (isFirstLoading) {
