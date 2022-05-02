@@ -7,5 +7,6 @@ module.exports = defineConfig({
         additionalData: `@import "@/assets/scss/colors.scss";`
       }
     }
-  }
+  },
+  publicPath: '/vue-youtube-project/',
 })
