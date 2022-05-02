@@ -135,6 +135,7 @@ export default {
     flex-direction: column;
     justify-content: space-between;
     height: 85px;
+    margin-top: 0.75rem;
     h2 {
       overflow: hidden;
       text-overflow: ellipsis;

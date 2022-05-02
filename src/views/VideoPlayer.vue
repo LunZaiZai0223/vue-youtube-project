@@ -124,9 +124,15 @@ export default defineComponent({
   border-radius: 0.5rem;
   padding: 1rem;
   position: relative;
+  word-break: break-all;
   ::v-deep a {
     color: $success;
     font-style: italic;
+    text-decoration: none;
+
+    &:hover {
+      text-decoration: underline;
+    }
   }
 }
 
