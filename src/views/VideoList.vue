@@ -32,70 +32,60 @@ export default {
     videoList: {
       type: Array,
       default: () => []
+    },
+    listType: {
+      type: String,
+      default: () => 'home'
     }
   },
   created () {
     console.log('in created');
   },
   mounted () {
-    console.log(this.videoList);
-    console.log(this.videoList.length);
-    console.log(this.$route);
     this.$store.commit('changeCurrentPageMode', this.$route.name);
     console.log(this.$refs.listWrapper);
-    // this.observer = new IntersectionObserver(this.callBack, {
-    //   threshold: 0.2,
-    // })
-    // this.observer.observer(this.$refs.listWrapper);
-    // console.log(this.observer);
+    const observerConfig = {
+      root: null,
+      threshold: 0,
+      rootMargin: '0px 0px -25% 0px',
+    };
+    this.observer = new IntersectionObserver(this.observerCallBack, observerConfig);
     // const testObserver = new IntersectionObserver((entries) => {
     //   console.log(entries);
     //   entries.forEach((entry) => {
-    //     console.log(entry.intersectionRatio);
-    //   }),
-    //   {
-    //     rootMargin: '0px 0px -50% 0px',
-    //     threshold: 0.2,
-    //   }
-    // });
-    // testObserver.observe(this.$refs.listWrapper);
-    // this.observer = new IntersectionObserver(this.callBack, {
-    //   rootMargin: '0px 0px -80% 0px',
-    // });
-    const testObserver = new IntersectionObserver((entries) => {
-      console.log(entries);
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          const thumbDiv = entry.target.children[0].children[0].children[0];
-          const foundItem = this.videoList.find((item) => item.id === entry.target.id);
-          thumbDiv.style.backgroundImage = `url(${foundItem.snippet.thumbnails.high.url})`;
-          testObserver.unobserve(entry.target);
-        }
-      })
-    },
-      {
-        root: null,
-        threshold: 0,
-        rootMargin: '0px 0px -30% 0px',
-      }
-    );
+    //     if (entry.isIntersecting) {
+    //       const thumbDiv = entry.target.children[0].children[0].children[0];
+    //       const foundItem = this.videoList.find((item) => item.id === entry.target.id);
+    //       thumbDiv.style.backgroundImage = `url(${foundItem.snippet.thumbnails.high.url})`;
+    //       testObserver.unobserve(entry.target);
+    //       if (this.listType === 'home') {
+    //         const foundItemWithIndex = this.videoList.findIndex((item) => item.id === entry.target.id);
+    //         const isLastVideo = foundItemWithIndex +1 === this.videoList.length;
+    //         if (isLastVideo) {
+    //           this.getFurtherVideoData();
+    //           setTimeout(() => {
+    //             console.log(this.$refs.cards);
+    //             const [...newCards] = this.$refs.cards.slice(this.$refs.cards.length - 12, this.$refs.cards.length);
+    //             console.log(newCards)
+    //             newCards.forEach((newCard) => testObserver.observe(newCard));
+    //           }, 1000);
+    //           // console.log(this.$refs.cards[this.$refs.cards.length - 12]);
+    //           // const [...newCards] = this.$refs.cards.slice(this.$refs.cards.length - 12, this.$refs.cards.length);
+    //           // console.log(newCards)
+    //           // FIX: 要找到動態更新 observe 元素的辦法
+    //         }
+    //       }
+    //     }
+    //   })
+    // }, observerConfig);
     const cards = this.$refs.cards;
     cards.forEach((card) => { 
       console.log(card);
-      testObserver.observe(card) 
+      // testObserver.observe(card) 
+      this.observer.observe(card) 
     });
-    console.log(testObserver);
     // console.log(this.observer);
     console.log(cards);
-    // const [...cards] = document.getElementsByClassName('card');
-    // for (let i = 0; i < cards.length; i++) {
-    //   console.log(cards[i]);
-    //   testObserver.observe(cards[i]);
-    // }
-    // cards.forEach((card) => {
-    //   console.log(card);
-    //   testObserver.observe(card);
-    // });
     console.log('end of mounted');
   },
   methods: {
@@ -105,6 +95,59 @@ export default {
         console.log(target);
         console.log(target.isIntersecting);
       })
+    },
+    observerCallBack (entries) {
+      console.log(entries);
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          const thumbDiv = entry.target.children[0].children[0].children[0];
+          const foundItem = this.videoList.find((item) => item.id === entry.target.id);
+          thumbDiv.style.backgroundImage = `url(${foundItem.snippet.thumbnails.high.url})`;
+          // testObserver.unobserve(entry.target);
+          this.observer.unobserve(entry.target);
+          if (this.listType === 'home') {
+            const foundItemWithIndex = this.videoList.findIndex((item) => item.id === entry.target.id);
+            const isLastVideo = foundItemWithIndex +1 === this.videoList.length;
+            if (isLastVideo) {
+              this.getFurtherVideoData();
+              setTimeout(() => {
+                console.log(this.$refs.cards);
+                const [...newCards] = this.$refs.cards.slice(this.$refs.cards.length - 12, this.$refs.cards.length);
+                console.log(newCards)
+                newCards.forEach((newCard) => this.observer.observe(newCard));
+              }, 500);
+              // console.log(this.$refs.cards[this.$refs.cards.length - 12]);
+              // const [...newCards] = this.$refs.cards.slice(this.$refs.cards.length - 12, this.$refs.cards.length);
+              // console.log(newCards)
+              // FIX: 要找到動態更新 observe 元素的辦法
+            }
+          }
+        }
+      })
+    },
+    async getFurtherVideoData () {
+      console.log('要打資料');
+      const { items, nextPageToken, pageInfo } = await this.$store.dispatch('fetchVideosData').then((data) => data);
+      if (!items && !nextPageToken && !pageInfo) {
+        console.log('no data at all');
+        return;
+      }
+      console.log(nextPageToken);
+      console.log(pageInfo);
+      // console.log(this.$store.getters('checkIsAllDataHasBeenLoaded'));
+      console.log(this.$store.state.firstNextPageToken === nextPageToken);
+      if (pageInfo.resultsPerPage === 8) {
+        console.log('全部打完了');
+        return;
+      }
+      if (!nextPageToken) {
+        console.log('最後一批');
+        this.$store.commit('setMaxResults', 8);
+        // return;
+      }
+      this.$store.commit('updateNextPageToken', nextPageToken);
+      this.$store.commit('addNewLoadedItems', items);
+      console.log('fetch further data');
     }
   }
 }

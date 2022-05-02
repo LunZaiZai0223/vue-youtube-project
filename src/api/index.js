@@ -7,14 +7,14 @@
 const baseUrl = 'https://youtube.googleapis.com/youtube/v3/videos?';
 const myKey = 'AIzaSyBZ7Mm1v1QEyUaYnPET_koH0uC10x3XWwo';
 
-const getSearchAllConfig = (isFirstLoading = true, nextPageToken) => {
+const getSearchAllConfig = (isFirstLoading = true, nextPageToken, maxResults = 12) => {
   if (isFirstLoading) {
     return {
       method: 'Get',
       params: {
         part: 'snippet',
         chart: 'mostPopular',
-        maxResults: 12,
+        maxResults,
         regionCode: 'TW',
         key: myKey
       }
@@ -26,7 +26,7 @@ const getSearchAllConfig = (isFirstLoading = true, nextPageToken) => {
     params: {
       part: 'snippet',
       chart: 'mostPopular',
-      maxResults: 12,
+      maxResults,
       regionCode: 'TW',
       key: myKey,
       pageToken: nextPageToken,

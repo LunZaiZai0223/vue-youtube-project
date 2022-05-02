@@ -3,6 +3,7 @@
   <video-list 
     v-if="loadedItems.length !== 0"
     :video-list="loadedItems"
+    list-Type="home"
   ></video-list>
   <the-footer></the-footer>
 </template>

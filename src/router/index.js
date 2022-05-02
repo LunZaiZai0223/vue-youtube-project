@@ -9,7 +9,8 @@ const router = createRouter({
   history: createWebHistory(),
   routes: [
     {
-      path: '/', 
+      path: '/',
+      name: 'home-page',
       component: HomePage
     },
     {
@@ -23,7 +24,18 @@ const router = createRouter({
       params: true,
       component: TheVideo
     },
-  ]
+  ],
+  scrollBehavior(to, from, savedPosition) {
+    console.log(to);
+    console.log(from);
+    console.log(savedPosition);
+    if (to.name === 'favorite-page' || to.name === 'video-page') {
+      return { left: 0, top: 0 };
+    }
+    if (savedPosition) {
+      return savedPosition;
+    }
+  }
 });
 
 export default router;

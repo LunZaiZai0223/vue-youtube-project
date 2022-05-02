@@ -2,8 +2,9 @@
   <the-navigation></the-navigation>
   <div class="favorite-list-wrapper" :class="{ 'no-favorite': isNoFavoriteVideo }">
     <video-list
-      :video-list="favoriteList"
       v-if="!isNoFavoriteVideo"
+      :video-list="favoriteList"
+      list-type="favorite"
     ></video-list>
     <div
       v-if="isNoFavoriteVideo"

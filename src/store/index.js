@@ -16,6 +16,9 @@ const store = createStore({
       currentPageMode: 'home',
       nextPageToken: '',
       currentVideoId: '',
+      firstNextPageToken: '',
+      maxResults: 12,
+      isLastFetchAPI: false,
     };
   },
   getters: {
@@ -34,6 +37,9 @@ const store = createStore({
     getCurrentVideoData: (state) => (id) => {
       return state.loadedItems.find((item) => item.id === id);
     },
+    checkIsAllDataHasBeenLoaded: (state) => (nextPageToken) => {
+      return state.firstNextPageToken === nextPageToken;
+    }
   },
   mutations: {
     addNewLoadedItems (state, payload = []) {
@@ -65,16 +71,33 @@ const store = createStore({
         state.currentPageMode = 'home';
       }
       console.log(state.currentPageMode);
+    },
+    setFirstNextPageToken (state, payload) {
+      state.firstNextPageToken = payload;
+    },
+    setMaxResults (state, payload) {
+      state.maxResults = payload;
+    },
+    setIsLastFetchAPI (state, payload = true) {
+      state.isLastFetchAPI = payload
     }
   },
   actions: {
     fetchVideosData({ state, commit }) {
       console.log('get called');
-      const config = getSearchAllConfig(state.isFirstLoading, state.nextPageToken);
+      if (state.isLastFetchAPI) {
+        console.log('資料都有了');
+        return { items: null, nextPageToken: null, pageInfo: null };
+      }
+      const config = getSearchAllConfig(state.isFirstLoading, state.nextPageToken, state.maxResults);
       const apiUrl = getApiUrl(baseUrl, config);
       // 第一次載入後就更換狀態，為了下次載入可以把 nextPageToken 塞進 config 中
       if (state.isFirstLoading) {
         commit('afterFirstLoading', false);
+        commit('setFirstNextPageToken', state.nextPageToken);
+      }
+      if (state.maxResults === 8) {
+        commit('setIsLastFetchAPI', true);
       }
       return fetch(apiUrl).then((response) => response.json());
     },
