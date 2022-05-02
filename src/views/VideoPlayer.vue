@@ -62,14 +62,7 @@ export default defineComponent({
   },
   methods: {
     ...mapMutations('favoriteList', ['addNewFavoriteItem', 'deleteFavoriteItem']),
-    handleClick () {
-      console.log('hit the favorite icon');
-    }
   },
-  mounted () {
-    console.log('in video player component');
-    console.log(this.snippet);
-  }
 })
 </script>
 
@@ -79,7 +72,7 @@ export default defineComponent({
   padding: 0 1.5rem;
   margin: 0 auto;
   margin-bottom: 3rem;
-  padding-top: 5rem;
+  padding-top: 6.5rem;
 }
 
 /* 直接開大決... */
@@ -171,6 +164,6 @@ export default defineComponent({
     align-items: center;
     justify-content: center;
   }
-
 }
+
 </style>

@@ -45,12 +45,9 @@ export default {
       return `https://www.youtube.com/watch?v=${this.currentVideoId}`;
     },
     getVideoDescription () {
-      console.log('get video description');
       return this.currentVideoItem.snippet.description;
     },
     getVideoTitle () {
-      console.log('get video title');
-      console.log(this.currentVideoItem);
       return this.currentVideoItem.snippet.localized.title;
     },
     getChannelTitle () {
@@ -69,14 +66,11 @@ export default {
     },
      async getVideoById () {
       // 如果 vuex 有資料的話就會是同步的，因為根本沒用到非同步 XDD
-      console.log('in get video by id')
       this.currentVideoId = this.$route.params.videoId;
       const foundVideo = this.hasTheVideoLocally(this.currentVideoId);
       if (foundVideo) { 
         // 有影片就不用再打 API 資料 -> 同步
-        console.log('vuex 有這個影片');
         this.currentVideoItem = foundVideo;
-        console.log(this.currentVideoItem);
         this.toggleIsFetchingData();
         return;
       }
@@ -84,16 +78,11 @@ export default {
       const { items } = await fetchVideoDataById({ id: this.currentVideoId }).then((data) => data);
       // items 是 array
       this.currentVideoItem = items[0];
-      console.log(this.currentVideoItem);
       this.toggleIsFetchingData();
     },
   },
   mounted () {
-    // NOTE: 最後再試試看能不能用 router guards 解決（先檢查有無資料，若無打完再進來之類的）
-
     this.getVideoById();
-    console.log('mounted got first');
-    console.log(' in mounted');
   }
 }
 </script>

@@ -35,20 +35,14 @@ export default {
   },
   methods: {
     async getVideosData () {
-      // const { items, nextPageToken } = await fetchVideosData({ isFirstLoading: false, nextPageToken: 'CAwQAA' }).then((data) => data);
-      // 先粗略地用 length 檢查有沒有資料，避免切頁面一直重新打 API
       if (this.loadedItems.length > 0) {
-        console.log('目前不用再打資料了');
         this.toggleIsFetchingData();
         return;
       }
       const { items, nextPageToken } = await this.$store.dispatch('fetchVideosData').then((data) => data);
-      console.log(items);
-      console.log(nextPageToken);
       this.$store.commit('updateNextPageToken', nextPageToken);
       this.$store.commit('addNewLoadedItems', items);
       this.toggleIsFetchingData();
-      console.log('hello world');
     },
     toggleIsFetchingData () {
       this.isFetchingData = false;
@@ -59,6 +53,7 @@ export default {
   }
 }
 </script>
+
 <style lang="scss" scoped>
 h1 {
   color: $primary;

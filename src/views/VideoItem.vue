@@ -2,11 +2,8 @@
   <div class="card-thumb">
     <router-link 
       :to="goToVideoPage"
-      @click="handleClick(id)"
     >
-    <!-- 用 div + background-image 改 url -->
-    <!-- <img :src="snippet.thumbnails.high.url" /> -->
-    <!-- <div :style="{ 'background-image': `url(${snippet.thumbnails.high.url})`}"></div> -->
+    <!-- 一開始 url 是色塊 -->
     <div :style="{ 'background-image': `url(data:image/gif;base64,R0lGODlhAQABAIAAAMLCwgAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw==)`}"></div>
     </router-link>
     <button 
@@ -61,15 +58,8 @@ export default {
     }
   },
   methods: {
-    ...mapMutations(['updateCurrentVideoId']),
     ...mapMutations('favoriteList', ['addNewFavoriteItem', 'deleteFavoriteItem']),
-    handleClick (id) {
-      console.log('I got click!');
-      console.log(id)
-    },
     addVideoToFavoriteList ({ id, snippet }) {
-      console.log('hit favorite icon');
-      console.log(id, snippet);
       const favoriteVideoData = {
         id,
         snippet,
@@ -82,11 +72,6 @@ export default {
 
 <style lang="scss" scoped>
 .card {
-  /* img { */
-  /*   width: 100%; */
-  /*   display: block; */
-  /*   margin: -10% 0; */
-  /* } */
   &-thumb {
     overflow: hidden;
     position: relative;

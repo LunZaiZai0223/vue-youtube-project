@@ -31,10 +31,10 @@ const router = createRouter({
     }
   ],
 
-  scrollBehavior(to, from, savedPosition) {
-    console.log(to);
-    console.log(from);
-    console.log(savedPosition);
+  scrollBehavior(to, _, savedPosition) {
+    if (to.name === 'home-page') {
+      return savedPosition || { left: 0, top: 0, behavior: 'smooth' };
+    }
     if (to.name === 'favorite-page' || to.name === 'video-page') {
       return { left: 0, top: 0 };
     }
