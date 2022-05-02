@@ -8,5 +8,7 @@ module.exports = defineConfig({
       }
     }
   },
-  publicPath: '/vue-youtube-project/',
+  publicPath: process.env.NODE_ENV === 'production'
+    ? '/vue-youtube-project/'
+    : '/'
 })
