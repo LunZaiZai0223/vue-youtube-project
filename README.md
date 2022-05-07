@@ -18,3 +18,5 @@ Thank you so much!
 
 1. [此練習專案功能及畫面皆以大神的練習當作範例參考](https://mini-ghost.github.io/vue3-youtube-practice/#/)
 2. [NomNes/vue3-youtube](https://github.com/NomNes/vue3-youtube)（建立 Youtube 播放器的 component）
+3. [icons](https://heroicons.com/)
+4. [illustration](https://www.freepik.com/)
