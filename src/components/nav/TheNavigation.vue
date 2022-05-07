@@ -48,6 +48,12 @@ export default {
       font-size: 1.75rem;
       font-weight: 600;
       color: inherit;
+      @media screen and (max-width: 500px) {
+        font-size: 1.5rem;
+      }
+      @media screen and (max-width: 400px) {
+        font-size: 1.25rem;
+      }
     }
     nav a {
       display: flex;
