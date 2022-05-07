@@ -13,6 +13,10 @@
       ></video-item>
     </div>
   </main>
+  <div class="list-loading-wrapper" v-if="displayLoading">
+    <p>載入中...</p>
+    <div class="list-loading"></div>
+  </div>
 </template>
 
 <script>
@@ -26,6 +30,7 @@ export default {
   data () {
     return {
       observer: null,
+      displayLoading: false,
     }
   },
   props: {
@@ -75,8 +80,7 @@ export default {
           if (this.listType === 'home') {
             const isNeededToGetFurtherVideoData = this.needToGetFurtherVideoData(entry.target.id);
             if (isNeededToGetFurtherVideoData) {
-              this.getFurtherVideoData();
-              this.observerFurtherCards();
+              this.fetchFurtherVideoHandler(this.getFurtherVideoData, this.observerFurtherCards)
             }
           }
         }
@@ -87,17 +91,32 @@ export default {
       // 資料都有了就不會再打 API
       //   -> { items: null, nextPageToken: null, pageInfo: null }
       if (!items && !nextPageToken && !pageInfo) {
-        return;
+        return false;
       }
       if (pageInfo.resultsPerPage === 8) {
         // 擋住不要繼續往下走
-        return;
+        return false;
       }
       if (!nextPageToken) {
         this.$store.commit('setMaxResults', 8);
       }
       this.$store.commit('updateNextPageToken', nextPageToken);
       this.$store.commit('addNewLoadedItems', items);
+      return true;
+    },
+    async fetchFurtherVideoHandler (fetchApiFunc, action) {
+      this.activateLoading();
+      const furtherApiResult = await fetchApiFunc();
+      if (furtherApiResult) {
+        action();
+      }
+      this.deactivateLoading();
+    },
+    activateLoading () {
+      this.displayLoading = true
+    },
+    deactivateLoading () {
+      this.displayLoading = false
     }
   }
 }
@@ -160,6 +179,33 @@ main {
       transform: scale(1);
       opacity: 0.7;
     }
+  }
+}
+
+.list-loading {
+  &-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0.75rem 0;
+    gap: 0.5rem;
+  }
+  display: flex;
+  justify-content: center;
+  &:after {
+    content: "";
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    border: 5px solid $grey;
+    border-top-color: $success;
+    animation: loading 1s ease infinite;
+  }
+}
+
+@keyframes loading {
+  to {
+    transform: rotate(1turn);
   }
 }
 
