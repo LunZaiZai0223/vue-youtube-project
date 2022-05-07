@@ -20,3 +20,8 @@ Thank you so much!
 2. [NomNes/vue3-youtube](https://github.com/NomNes/vue3-youtube)（建立 Youtube 播放器的 component）
 3. [icons](https://heroicons.com/)
 4. [illustration](https://www.freepik.com/)
+
+## Demo
+
+https://lunzaizai0223.github.io/vue-youtube-project/
+
